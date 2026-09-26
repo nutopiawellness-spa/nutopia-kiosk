@@ -1,0 +1,15 @@
+{
+  "name": "NUtopia Spa Kiosk",
+  "short_name": "NUtopia",
+  "start_url": "./?kiosk",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F1EFE6",
+  "theme_color": "#555A36",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
