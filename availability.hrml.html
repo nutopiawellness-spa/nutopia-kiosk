@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F1EFE6">
+<title>NUtopia Spa · Availability & Menu</title>
+<meta name="description" content="See open treatment times and our full menu with prices at NUtopia Wellness Spa, Salcedo Village, Makati — then book your slot.">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,600&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F1EFE6; --card:#FDFBF7; --olive:#555A36; --olive-deep:#414124; --olive-ink:#FAF8F2;
+  --ink:#2E2E1F; --muted:#5F5E49; --soft:#EEEEE3; --line:#D9D6C6;
+  --few:#8A6D33; --few-bg:#F6EFDD; --full:#9A978A; --full-bg:#ECEAE2;
+  --display:"Cormorant Garamond", Georgia, serif; --sans:"Jost", system-ui, sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid #8A8F5C;outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 16px calc(110px + env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.brand{font-family:var(--display);font-style:italic;font-weight:600;font-size:clamp(26px,6vw,34px);color:var(--olive-deep);line-height:1}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:6px 12px}
+.live i{width:8px;height:8px;border-radius:50%;background:#5C8A3A;box-shadow:0 0 0 0 rgba(92,138,58,.5);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(92,138,58,0)}100%{box-shadow:0 0 0 0 rgba(92,138,58,0)}}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(32px,7.5vw,50px);line-height:1.05;margin:18px 0 6px}
+.lede{margin:0 0 18px;font-size:clamp(15px,2.4vw,17px);line-height:1.5;color:var(--muted)}
+.days{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 14px;padding:2px 16px 6px}
+.days::-webkit-scrollbar{display:none}
+.day{flex-shrink:0;min-width:72px;padding:9px 12px;border:1px solid var(--line);border-radius:14px;background:var(--card);text-align:center;line-height:1.15}
+.day b{display:block;font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.day span{display:block;font-family:var(--display);font-size:24px;font-weight:600;margin-top:2px}
+.day[aria-pressed="true"]{background:var(--olive);border-color:var(--olive);color:var(--olive-ink)}
+.day[aria-pressed="true"] b{color:rgba(250,248,242,.8)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin:0 0 12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px}
+.sec-t{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(102px,1fr));gap:8px}
+.slot{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);text-align:left;text-decoration:none;min-height:62px;box-shadow:0 6px 18px rgba(65,65,36,.05)}
+.slot .t{font-size:16px;font-weight:600}
+.slot .s{font-size:11.5px;color:#4E6B30;font-weight:500}
+.slot.few{background:var(--few-bg);border-color:#E3D3AE}
+.slot.few .s{color:var(--few)}
+.slot.full{background:var(--full-bg);border-color:var(--full-bg);color:var(--full);box-shadow:none;cursor:default}
+.slot.full .s{color:var(--full)}
+.slot:not(.full):hover{border-color:var(--olive)}
+.note{margin-top:18px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card);font-size:13px;line-height:1.55;color:var(--muted)}
+.note b{color:var(--ink)}
+.empty,.err{padding:26px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px;background:var(--card);font-size:14px;line-height:1.5}
+.sk{height:62px;border-radius:12px;background:linear-gradient(90deg,#ECEAE0,#F5F3EC,#ECEAE0);background-size:200% 100%;animation:sk 1.2s infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(241,239,230,0),rgba(241,239,230,.96) 30%);display:flex;justify-content:center}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:688px;min-height:56px;border-radius:16px;background:var(--olive);color:var(--olive-ink);text-decoration:none;font-weight:600;font-size:17px;letter-spacing:.02em;box-shadow:0 12px 28px rgba(65,65,36,.25)}
+.seg{display:flex;background:var(--soft);border:1px solid var(--line);border-radius:16px;padding:4px;margin:0 0 18px;gap:4px}
+.seg button{flex:1;min-height:46px;border:0;border-radius:12px;background:transparent;color:var(--muted);font-weight:600;font-size:15px;transition:background .25s,color .25s,box-shadow .25s}
+.seg button[aria-selected="true"]{background:var(--card);color:var(--olive-deep);box-shadow:0 4px 14px rgba(65,65,36,.12)}
+.view{animation:vin .35s ease}
+@keyframes vin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.m-search{width:100%;min-height:50px;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:0 16px;font:inherit;font-size:16px;color:var(--ink);margin-bottom:12px}
+.m-search:focus{outline:none;border-color:var(--olive)}
+.m-cats{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 6px;padding:2px 16px 8px}
+.m-cats::-webkit-scrollbar{display:none}
+.m-cat{flex-shrink:0;min-height:40px;padding:0 15px;border:1px solid var(--line);border-radius:20px;background:var(--card);font-size:14px;font-weight:500;color:var(--muted)}
+.m-cat[aria-pressed="true"]{background:var(--olive);border-color:var(--olive);color:var(--olive-ink)}
+.m-sec{font-family:var(--display);font-size:26px;font-weight:600;margin:18px 2px 10px;color:var(--olive-deep)}
+.m-list{display:flex;flex-direction:column;gap:10px}
+.m-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:0 6px 18px rgba(65,65,36,.05);animation:vin .35s ease both}
+.m-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.m-name{font-size:16.5px;font-weight:600;line-height:1.3}
+.m-book{flex-shrink:0;display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:18px;background:var(--soft);border:1px solid var(--line);color:var(--olive-deep);font-size:13.5px;font-weight:600;text-decoration:none}
+.m-book:hover{border-color:var(--olive)}
+.m-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.m-opt{display:inline-flex;align-items:baseline;gap:6px;padding:6px 11px;border-radius:10px;background:var(--bg);font-size:13px;color:var(--muted)}
+.m-opt b{font-size:15px;color:var(--olive-deep);font-weight:600}
+.m-empty{padding:26px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px;background:var(--card);font-size:14px}
+.m-note{margin-top:14px;font-size:12.5px;color:var(--muted);text-align:center}
+.foot{margin-top:22px;text-align:center;font-size:12px;color:var(--muted);line-height:1.6}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">NUtopia Spa</div>
+    <div class="live" aria-live="polite"><i></i><span id="upd">Live</span></div>
+  </div>
+  <h1 id="ttl">Find an open time</h1>
+  <p class="lede" id="lede">See when our therapists are free, then tap a time to book. Updated every few minutes.</p>
+
+  <div class="seg" role="tablist" aria-label="View">
+    <button type="button" role="tab" id="tab-times" aria-selected="true" aria-controls="v-times" data-v="times">🕒 Open times</button>
+    <button type="button" role="tab" id="tab-menu" aria-selected="false" aria-controls="v-menu" data-v="menu">📋 Menu & prices</button>
+  </div>
+
+  <section id="v-times" class="view" role="tabpanel" aria-labelledby="tab-times">
+  <div class="days" id="days" role="group" aria-label="Choose a day"></div>
+  <div class="legend">
+    <span><i style="background:#DCE5CB;border:1px solid #B9C99C"></i>Available</span>
+    <span><i style="background:var(--few-bg);border:1px solid #E3D3AE"></i>Few left</span>
+    <span><i style="background:var(--full-bg)"></i>Fully booked</span>
+  </div>
+  <div id="slots"></div>
+
+  <div class="note">
+    <b>How it works:</b> pick your time on the booking page. Our front desk will message you to confirm your therapist and room. 🌿<br>
+    For groups of 3 or more, we recommend booking a day ahead.
+  </div>
+  </section>
+
+  <section id="v-menu" class="view" role="tabpanel" aria-labelledby="tab-menu" hidden>
+    <input class="m-search" id="m-search" type="search" placeholder="🔍 Search treatments (e.g. Swedish, facial)" aria-label="Search treatments" autocomplete="off">
+    <div class="m-cats" id="m-cats" role="group" aria-label="Category"></div>
+    <div id="m-body"></div>
+    <div class="m-note">Prices in Philippine peso. Tap <b>Book</b> to choose your date and time.</div>
+  </section>
+  <div class="foot">NUtopia Wellness Spa · G/F Unit 103 Makati Executive Center, Salcedo Village, Makati<br>Mon–Thu 11 AM – 12 MN · Fri–Sun 11 AM – 2 AM</div>
+</div>
+<div class="bar"><a class="btn" id="book" href="#" target="_blank" rel="noopener">📅 Book an Appointment</a></div>
+
+<script>
+// ── Settings ──
+const AVAIL_URL="https://script.google.com/macros/s/AKfycbwHgV1uh6--KdNhPVD-VENA00bfZ3xwoVMBjCVsfmjIi2ksHYGjMpMAPjb-899CphxB/exec"; // Kiosk Apps Script (anonymous counts lang)
+const BOOK_URL="https://api.leadconnectorhq.com/widget/booking/Ns7rCq47ddSwMP7KSZ2h";
+const DAYS_AHEAD=7, REFRESH_MS=120000;
+
+const pad=n=>String(n).padStart(2,"0");
+const iso=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const todayISO=iso(new Date());
+let selDate=todayISO, cache={}, loading=false;
+document.getElementById("book").href=BOOK_URL;
+
+function fmtTime(t){const[h,m]=t.split(":").map(Number);const ap=h>=12&&h<24?"PM":"AM";const h12=h%12===0?12:h%12;return h12+":"+pad(m)+" "+ap;}
+function renderDays(){
+  const el=document.getElementById("days");let h="";
+  for(let i=0;i<DAYS_AHEAD;i++){
+    const d=new Date();d.setDate(d.getDate()+i);const v=iso(d);
+    const top=i===0?"Today":i===1?"Tmrw":d.toLocaleDateString("en-PH",{weekday:"short"});
+    h+=`<button class="day" type="button" aria-pressed="${v===selDate}" data-d="${v}"><b>${top}</b><span>${d.getDate()}</span></button>`;
+  }
+  el.innerHTML=h;
+  el.querySelectorAll(".day").forEach(b=>b.onclick=()=>{selDate=b.dataset.d;renderDays();load();});
+}
+function renderSlots(){
+  const el=document.getElementById("slots");const data=cache[selDate];
+  if(!data){el.innerHTML=`<div class="grid">${'<div class="sk"></div>'.repeat(9)}</div>`;return;}
+  if(data.error){el.innerHTML=`<div class="err">We couldn't load the live schedule right now.<br>You can still book directly — tap <b>Book an Appointment</b> below.</div>`;return;}
+  if(!data.slots.length){el.innerHTML=`<div class="empty">No more open times today.<br>Choose another day above. 🌿</div>`;return;}
+  const groups=[["Afternoon",s=>!s.next&&Number(s.t.split(":")[0])<17],["Evening",s=>!s.next&&Number(s.t.split(":")[0])>=17],["Late night",s=>s.next]];
+  let h="";
+  groups.forEach(([name,fn])=>{
+    const list=data.slots.filter(fn);if(!list.length)return;
+    h+=`<div class="sec-t">${name}</div><div class="grid">`+list.map(s=>{
+      const cls=s.free<=0?"full":s.free<=2?"few":"";
+      const lbl=s.free<=0?"Fully booked":s.free<=2?"Few left":"Available";
+      return s.free<=0
+        ?`<div class="slot full" aria-label="${fmtTime(s.t)} fully booked"><span class="t">${fmtTime(s.t)}</span><span class="s">${lbl}</span></div>`
+        :`<a class="slot ${cls}" href="${BOOK_URL}" target="_blank" rel="noopener" aria-label="Book ${fmtTime(s.t)}, ${lbl}"><span class="t">${fmtTime(s.t)}</span><span class="s">${lbl}</span></a>`;
+    }).join("")+`</div>`;
+  });
+  el.innerHTML=h;
+}
+async function load(force){
+  renderSlots();
+  if(cache[selDate]&&!cache[selDate].error&&!force)return;
+  const d=selDate;
+  try{
+    const r=await fetch(AVAIL_URL+"?action=availability&date="+d+"&_="+Date.now());
+    const j=await r.json();
+    cache[d]=j&&j.status==="ok"&&Array.isArray(j.slots)?j:{error:true};
+  }catch(e){cache[d]={error:true};}
+  document.getElementById("upd").textContent="Updated "+new Date().toLocaleTimeString("en-PH",{hour:"numeric",minute:"2-digit"});
+  if(d===selDate)renderSlots();
+}
+renderDays();load();
+setInterval(()=>{if(view==="times"){cache={};load(true);}},REFRESH_MS);
+// ── MENU & PRICES (kopya ng service list ng scheduler — i-update kasabay kapag may bagong service)
+const MENU=[{"c":"Therapeutic Massage","n":"Swedish Massage","v":"60 min","p":850,"d":60},{"c":"Therapeutic Massage","n":"Swedish Massage","v":"90 min","p":1200,"d":90},{"c":"Therapeutic Massage","n":"Swedish Massage","v":"120 min","p":1500,"d":120},{"c":"Therapeutic Massage","n":"Aromatherapy","v":"60 min","p":850,"d":60},{"c":"Therapeutic Massage","n":"Aromatherapy","v":"90 min","p":1200,"d":90},{"c":"Therapeutic Massage","n":"Aromatherapy","v":"120 min","p":1500,"d":120},{"c":"Therapeutic Massage","n":"Balinese Massage","v":"60 min","p":850,"d":60},{"c":"Therapeutic Massage","n":"Balinese Massage","v":"90 min","p":1200,"d":90},{"c":"Therapeutic Massage","n":"Balinese Massage","v":"120 min","p":1500,"d":120},{"c":"Therapeutic Massage","n":"Back Massage","v":"60 min","p":850,"d":60},{"c":"Therapeutic Massage","n":"Back Massage","v":"90 min","p":1200,"d":90},{"c":"Therapeutic Massage","n":"Back Massage","v":"120 min","p":1500,"d":120},{"c":"Therapeutic Massage","n":"Head Massage","v":"60 min","p":850,"d":60},{"c":"Therapeutic Massage","n":"Head Massage","v":"90 min","p":1200,"d":90},{"c":"Therapeutic Massage","n":"Head Massage","v":"120 min","p":1500,"d":120},{"c":"Therapeutic Massage","n":"Foot Reflexology","v":"60 min","p":850,"d":60},{"c":"Therapeutic Massage","n":"Foot Reflexology","v":"90 min","p":1200,"d":90},{"c":"Therapeutic Massage","n":"Foot Reflexology","v":"120 min","p":1500,"d":120},{"c":"Therapeutic Massage","n":"Hand & Foot Massage","v":"60 min","p":850,"d":60},{"c":"Therapeutic Massage","n":"Hand & Foot Massage","v":"90 min","p":1200,"d":90},{"c":"Therapeutic Massage","n":"Hand & Foot Massage","v":"120 min","p":1500,"d":120},{"c":"Therapeutic Massage","n":"Hand Massage","v":"60 min","p":800,"d":60},{"c":"Therapeutic Massage","n":"Hand Massage","v":"90 min","p":1050,"d":90},{"c":"Therapeutic Massage","n":"Hand Massage","v":"120 min","p":1400,"d":120},{"c":"Therapeutic Massage","n":"Signature Combination","v":"60 min","p":950,"d":60},{"c":"Therapeutic Massage","n":"Signature Combination","v":"90 min","p":1300,"d":90},{"c":"Therapeutic Massage","n":"Signature Combination","v":"120 min","p":1700,"d":120},{"c":"Therapeutic Massage","n":"Shiatsu","v":"60 min","p":950,"d":60},{"c":"Therapeutic Massage","n":"Shiatsu","v":"90 min","p":1300,"d":90},{"c":"Therapeutic Massage","n":"Shiatsu","v":"120 min","p":1700,"d":120},{"c":"Therapeutic Massage","n":"Deep Tissue","v":"60 min","p":950,"d":60},{"c":"Therapeutic Massage","n":"Deep Tissue","v":"90 min","p":1300,"d":90},{"c":"Therapeutic Massage","n":"Deep Tissue","v":"120 min","p":1700,"d":120},{"c":"Therapeutic Massage","n":"Thai Massage","v":"60 min","p":950,"d":60},{"c":"Therapeutic Massage","n":"Thai Massage","v":"90 min","p":1300,"d":90},{"c":"Therapeutic Massage","n":"Thai Massage","v":"120 min","p":1700,"d":120},{"c":"Therapeutic Massage","n":"Slimming Massage","v":"30 min","p":950,"d":30},{"c":"Therapeutic Massage","n":"Slimming Massage","v":"60 min","p":1300,"d":60},{"c":"Therapeutic Massage","n":"Slimming Massage","v":"90 min","p":1700,"d":90},{"c":"Therapeutic Massage","n":"Hilot","v":"60 min","p":1100,"d":60},{"c":"Therapeutic Massage","n":"Hilot","v":"90 min","p":1550,"d":90},{"c":"Therapeutic Massage","n":"Hilot","v":"120 min","p":2000,"d":120},{"c":"Therapeutic Massage","n":"Ventosa","v":"60 min","p":1100,"d":60},{"c":"Therapeutic Massage","n":"Ventosa","v":"90 min","p":1550,"d":90},{"c":"Therapeutic Massage","n":"Ventosa","v":"120 min","p":2000,"d":120},{"c":"Therapeutic Massage","n":"Hot Stone","v":"90 min","p":1850,"d":90},{"c":"Therapeutic Massage","n":"Hot Stone","v":"120 min","p":2300,"d":120},{"c":"Therapeutic Massage","n":"Lymphatic Drainage Massage","v":"60 min","p":1100,"d":60},{"c":"Therapeutic Massage","n":"Lymphatic Drainage Massage","v":"90 min","p":1550,"d":90},{"c":"Therapeutic Massage","n":"Lymphatic Drainage Massage","v":"120 min","p":2000,"d":120},{"c":"Therapeutic Massage","n":"Foot Reflexology","v":"30 min","p":500,"d":30},{"c":"Therapeutic Massage","n":"Back Massage","v":"30 min","p":500,"d":30},{"c":"Therapeutic Massage","n":"Head Massage","v":"30 min","p":500,"d":30},{"c":"Facial Treatment","n":"Hydra Facial","v":"","p":12000,"d":60},{"c":"Facial Treatment","n":"HIFU","v":"","p":60000,"d":90},{"c":"Facial Treatment","n":"Eye Treatment","v":"","p":2000,"d":30},{"c":"Facial Treatment","n":"Express Facial","v":"","p":699,"d":30},{"c":"Facial Treatment","n":"Prestige Essential Facial","v":"","p":1000,"d":60},{"c":"Facial Treatment","n":"Eye Contour","v":"","p":1100,"d":60},{"c":"Facial Treatment","n":"White and Glow","v":"","p":1100,"d":60},{"c":"Facial Treatment","n":"Collagen Enriching Facial","v":"Anti-Aging","p":1200,"d":60},{"c":"Facial Treatment","n":"Nourishing (Acne Treatment)","v":"","p":1250,"d":60},{"c":"Facial Treatment","n":"Illuminating (Glow)","v":"","p":1250,"d":60},{"c":"Facial Treatment","n":"Ultimate Diamond Peel","v":"","p":1400,"d":60},{"c":"Facial Treatment","n":"Ultrasonic Wonder Lift","v":"","p":1500,"d":60},{"c":"Facial Treatment","n":"24k Gold Facial","v":"","p":2200,"d":60},{"c":"Facial Treatment","n":"Ultrasonic Facial","v":"","p":2300,"d":60},{"c":"Facial Treatment","n":"Ionic Collagen Booster","v":"","p":2200,"d":60},{"c":"Facial Treatment","n":"Advanced Regimen by NU Skin","v":"","p":2400,"d":60},{"c":"Facial Treatment","n":"Facial Add-on (Cucumber/Whitening/Collagen)","v":"","p":400,"d":60},{"c":"Nail Care & Grooming","n":"Classic Hand Clean","v":"","p":400,"d":45},{"c":"Nail Care & Grooming","n":"Classic Foot Clean","v":"","p":450,"d":45},{"c":"Nail Care & Grooming","n":"Classic Hand & Foot Clean","v":"","p":800,"d":90},{"c":"Nail Care & Grooming","n":"Signature Manicure","v":"","p":500,"d":45},{"c":"Nail Care & Grooming","n":"Signature Pedicure","v":"","p":550,"d":45},{"c":"Nail Care & Grooming","n":"Signature Manicure & Pedicure","v":"","p":1000,"d":120},{"c":"Nail Care & Grooming","n":"Nail Art & Design","v":"","p":1000,"d":120},{"c":"Nail Care & Grooming","n":"Gellific Manicure","v":"","p":999,"d":90},{"c":"Nail Care & Grooming","n":"Gellific Pedicure","v":"","p":999,"d":90},{"c":"Nail Care & Grooming","n":"Gellific Manicure & Pedicure","v":"","p":1849,"d":150},{"c":"Nail Care & Grooming","n":"Gel Removal (w/ Cleaning)","v":"","p":600,"d":90},{"c":"Nail Care & Grooming","n":"Nail Art Sticker","v":"","p":30,"d":240},{"c":"Nail Care & Grooming","n":"Acrylic Nails","v":"Starts at","p":1800,"d":240},{"c":"Nail Care & Grooming","n":"Hard Gel Nail","v":"","p":1800,"d":240},{"c":"Nail Care & Grooming","n":"Acrygel","v":"Starts at","p":1950,"d":240},{"c":"Nail Care & Grooming","n":"Dipping Powder","v":"","p":1200,"d":240},{"c":"Hand & Foot Services","n":"Hand Spa w/ Paraffin & Massage","v":"","p":1000,"d":60},{"c":"Hand & Foot Services","n":"Hand Spa w/ Massage","v":"","p":950,"d":60},{"c":"Hand & Foot Services","n":"Hand Spa w/ Manicure","v":"","p":1000,"d":60},{"c":"Hand & Foot Services","n":"Foot Spa w/ Paraffin & Massage","v":"","p":1100,"d":60},{"c":"Hand & Foot Services","n":"Foot Spa w/ Massage","v":"","p":1050,"d":60},{"c":"Hand & Foot Services","n":"Foot Spa w/ Pedicure","v":"","p":1100,"d":90},{"c":"Beauty Services","n":"Waxing - Upper Lip","v":"","p":600,"d":60},{"c":"Beauty Services","n":"Waxing - Eyebrow Wax/Thread","v":"","p":700,"d":60},{"c":"Beauty Services","n":"Waxing - Underarm","v":"","p":800,"d":60},{"c":"Beauty Services","n":"Waxing - Arm","v":"","p":1000,"d":60},{"c":"Beauty Services","n":"Waxing - Trimming","v":"","p":1150,"d":60},{"c":"Beauty Services","n":"Waxing - Leg","v":"","p":1150,"d":60},{"c":"Beauty Services","n":"Waxing - Back Area","v":"","p":1650,"d":60},{"c":"Beauty Services","n":"Waxing - Brazilian","v":"","p":1800,"d":90},{"c":"Beauty Services","n":"Waxing - Whole Body","v":"","p":5000,"d":180},{"c":"Beauty Services","n":"Eyelash Extension - Natural Look","v":"","p":1500,"d":60},{"c":"Beauty Services","n":"Eyelash Extension - Open Eye","v":"","p":1700,"d":60},{"c":"Beauty Services","n":"Eyelash Extension - Cat Eye","v":"","p":1900,"d":60},{"c":"Beauty Services","n":"Bleaching - Whole Body","v":"","p":3000,"d":60},{"c":"Beauty Services","n":"Bleaching - Body w/ Scrub","v":"","p":3550,"d":120},{"c":"Beauty Services","n":"Bleaching - Underarm","v":"","p":1200,"d":30},{"c":"Beauty Services","n":"Bleaching - Arms","v":"","p":1350,"d":30},{"c":"Beauty Services","n":"Bleaching - Legs","v":"","p":1600,"d":60},{"c":"Beauty Services","n":"Bleaching - Add-on Scrub","v":"","p":700,"d":30},{"c":"Beauty Services","n":"Gluta Body Wrap","v":"","p":2000,"d":30},{"c":"Beauty Services","n":"RF Treatment - Jawline/Neck","v":"","p":1800,"d":30},{"c":"Beauty Services","n":"RF Treatment - Forehead","v":"","p":1800,"d":30},{"c":"Beauty Services","n":"RF Treatment - Undereye","v":"","p":1800,"d":30},{"c":"Beauty Services","n":"RF Treatment - Legs","v":"","p":2100,"d":30},{"c":"Beauty Services","n":"RF Treatment - Arms","v":"","p":2100,"d":30},{"c":"Beauty Services","n":"RF Treatment - Face","v":"","p":2300,"d":30},{"c":"Beauty Services","n":"RF Treatment - Tummy","v":"","p":2100,"d":30},{"c":"Beauty Services","n":"RF Treatment - Whole Body","v":"","p":5000,"d":30},{"c":"Scrubs & Sauna","n":"Sauna","v":"","p":750,"d":30},{"c":"Scrubs & Sauna","n":"Whole Body Scrub","v":"","p":1100,"d":60},{"c":"Scrubs & Sauna","n":"Body Scrub w/ Body Mask","v":"","p":1800,"d":60},{"c":"Scrubs & Sauna","n":"Body Scrub w/ Sauna","v":"","p":1500,"d":90},{"c":"Scrubs & Sauna","n":"Back Cleaning","v":"","p":1100,"d":45},{"c":"Body Treatment","n":"Hydrotherapy/Jacuzzi w/ Full Body Massage","v":"30 min","p":1700,"d":90},{"c":"Body Treatment","n":"Hydrotherapy/Jacuzzi w/ Sauna & Body Massage","v":"30 min","p":2500,"d":120},{"c":"Body Treatment","n":"Hydrotherapy/Jacuzzi w/ Scrub & 1hr Massage","v":"30 min","p":2500,"d":150},{"c":"Body Treatment","n":"Hydrotherapy/Jacuzzi w/ Sauna Scrub & 1hr Massage","v":"30 min","p":3000,"d":180},{"c":"Body Treatment","n":"Hot Wrap","v":"","p":1500,"d":45},{"c":"Body Treatment","n":"G5 Body Contouring","v":"","p":2000,"d":45},{"c":"Promos & Packages","n":"Promo 1 - Foot Spa & Mani-Pedi","v":"","p":1700,"d":120},{"c":"Promos & Packages","n":"Promo 2 - Body Scrub & 60min Massage","v":"","p":1700,"d":120},{"c":"Promos & Packages","n":"Promo 3 - Hand/Foot Spa, Hand/Foot Massage & 90min Massage","v":"","p":2000,"d":150},{"c":"Promos & Packages","n":"Hand Spa & 90min Massage","v":"","p":1900,"d":120},{"c":"Promos & Packages","n":"Foot Spa & 90min Massage","v":"","p":2000,"d":120},{"c":"Promos & Packages","n":"Promo 4 - Signature Diamond Peel & 60min Massage","v":"","p":2000,"d":120},{"c":"Promos & Packages","n":"Promo 5 - Ultrasonic Wonder Lift & Eye Contour","v":"","p":2200,"d":90},{"c":"Promos & Packages","n":"Mix & Match Combo","v":"","p":1800,"d":90},{"c":"Promos & Packages","n":"Relax & Glow - Deep Cleansing Facial + Whole Body Massage","v":"","p":1499,"d":120},{"c":"Promos & Packages","n":"Couple Package 1 - Sauna & 90min Massage","v":"2 pax","p":3499,"d":120},{"c":"Promos & Packages","n":"Couple Package 2 - Foot Spa & 60min Massage","v":"2 pax","p":3499,"d":120},{"c":"Promos & Packages","n":"Couple Package 3 - Scrub Massage Facial","v":"2 pax","p":4499,"d":120},{"c":"Promos & Packages","n":"Couple Package 4 - Foot Spa Massage Ear Candling","v":"2 pax","p":4499,"d":120},{"c":"Promos & Packages","n":"Couple Package 5 - Sauna Massage Diamond Facial","v":"2 pax","p":4999,"d":150},{"c":"Promos & Packages","n":"Spa Party - Classic Spa","v":"5 pax","p":8999,"d":150},{"c":"Promos & Packages","n":"Spa Party - Elite Spa","v":"5 pax","p":9999,"d":150},{"c":"Promos & Packages","n":"Spa Party - Majestic Spa","v":"5 pax","p":11999,"d":150},{"c":"Promos & Packages","n":"Spa Party - Deluxe Spa","v":"5 pax","p":16499,"d":240},{"c":"Promos & Packages","n":"Corporate - Wellness Revolution","v":"per head","p":900,"d":120},{"c":"Promos & Packages","n":"Corporate - Radiant Retreats","v":"per head","p":1000,"d":60},{"c":"Promos & Packages","n":"Corporate - Wellness Wonders","v":"per head","p":1200,"d":120},{"c":"Promos & Packages","n":"Corporate - Getaway Retreat","v":"10 heads","p":8500,"d":120}];
+const CAT_NAME={"Therapeutic Massage":"Massage","Facial Treatment":"Facials","Nail Care & Grooming":"Nails","Hand & Foot Services":"Hand & Foot","Beauty Services":"Beauty","Scrubs & Sauna":"Scrubs & Sauna","Body Treatment":"Body","Promos & Packages":"Promos & Packages"};
+const MCATS=[...new Set(MENU.map(x=>x.c))];
+let mCat="all",mQ="";
+const php=n=>"₱"+Number(n).toLocaleString("en-PH");
+const escH=v=>String(v).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function renderCats(){
+  const el=document.getElementById("m-cats");
+  el.innerHTML=[["all","All"],...MCATS.map(c=>[c,CAT_NAME[c]||c])].map(([v,l])=>`<button type="button" class="m-cat" aria-pressed="${mCat===v}" data-c="${escH(v)}">${escH(l)}</button>`).join("");
+  el.querySelectorAll(".m-cat").forEach(b=>b.onclick=()=>{mCat=b.dataset.c;renderCats();renderMenu();});
+}
+function renderMenu(){
+  const q=mQ.trim().toLowerCase();
+  const list=MENU.filter(x=>(mCat==="all"||x.c===mCat)&&(!q||(x.n+" "+x.v+" "+(CAT_NAME[x.c]||x.c)).toLowerCase().includes(q)));
+  const el=document.getElementById("m-body");
+  if(!list.length){el.innerHTML=`<div class="m-empty">No treatment found for "${escH(mQ)}".<br>Try another word, or message us — we're happy to help. 🌿</div>`;return;}
+  let h="",i=0;
+  MCATS.forEach(c=>{
+    const items=list.filter(x=>x.c===c);if(!items.length)return;
+    const groups=[];const byName={};
+    items.forEach(x=>{if(!byName[x.n]){byName[x.n]={n:x.n,o:[]};groups.push(byName[x.n]);}byName[x.n].o.push(x);});
+    h+=`<div class="m-sec">${escH(CAT_NAME[c]||c)}</div><div class="m-list">`+groups.map(g=>`<div class="m-card" style="animation-delay:${Math.min(i++,10)*35}ms">
+      <div class="m-top"><div class="m-name">${escH(g.n)}</div><a class="m-book" href="${BOOK_URL}" target="_blank" rel="noopener" aria-label="Book ${escH(g.n)}">Book ›</a></div>
+      <div class="m-opts">${g.o.slice().sort((a,b)=>a.d-b.d).map(o=>`<span class="m-opt">${escH(o.v||o.d+" min")}<b>${php(o.p)}</b></span>`).join("")}</div>
+    </div>`).join("")+`</div>`;
+  });
+  el.innerHTML=h;
+}
+const VIEW_TEXT={times:["Find an open time","See when our therapists are free, then tap a time to book. Updated every few minutes."],
+  menu:["Menu & prices","Browse our treatments and prices. Tap Book when you're ready."]};
+let view="times",menuReady=false;
+function setView(v,push){
+  view=v==="menu"?"menu":"times";
+  document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.v===view)));
+  document.getElementById("v-times").hidden=view!=="times";
+  document.getElementById("v-menu").hidden=view!=="menu";
+  document.getElementById("ttl").textContent=VIEW_TEXT[view][0];
+  document.getElementById("lede").textContent=VIEW_TEXT[view][1];
+  if(view==="menu"&&!menuReady){renderCats();renderMenu();menuReady=true;}
+  if(push){try{const u=new URL(location.href);if(view==="menu")u.searchParams.set("tab","menu");else u.searchParams.delete("tab");history.replaceState(null,"",u);}catch(e){}}
+}
+document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{setView(b.dataset.v,true);window.scrollTo({top:0,behavior:"smooth"});});
+document.getElementById("m-search").addEventListener("input",e=>{mQ=e.target.value;renderMenu();});
+setView(new URLSearchParams(location.search).get("tab")==="menu"?"menu":"times");
+
+</script>
+</body>
+</html>
