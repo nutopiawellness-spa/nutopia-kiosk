@@ -126,7 +126,15 @@ h1{font-family:var(--display);font-weight:600;font-size:clamp(32px,7.5vw,50px);l
 <script>
 // ── Settings ──
 const AVAIL_URL="https://script.google.com/macros/s/AKfycbwHgV1uh6--KdNhPVD-VENA00bfZ3xwoVMBjCVsfmjIi2ksHYGjMpMAPjb-899CphxB/exec"; // Kiosk Apps Script (anonymous counts lang)
-const BOOK_URL="https://api.leadconnectorhq.com/widget/booking/Ns7rCq47ddSwMP7KSZ2h";
+// Ipasa sa GHL calendar ang pinanggalingan (utm_*, fbclid, gclid) para hindi mawala ang "Attribution source"
+const BOOK_URL=(()=>{
+  const base="https://api.leadconnectorhq.com/widget/booking/Ns7rCq47ddSwMP7KSZ2h";
+  try{
+    const q=new URLSearchParams(location.search),out=new URLSearchParams();
+    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid","gclid"].forEach(k=>{const v=q.get(k);if(v)out.set(k,v.slice(0,200));});
+    const str=out.toString();return str?base+"?"+str:base;
+  }catch(e){return base;}
+})();
 const DAYS_AHEAD=7, REFRESH_MS=120000;
 
 const pad=n=>String(n).padStart(2,"0");
