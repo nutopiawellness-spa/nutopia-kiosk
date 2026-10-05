@@ -835,13 +835,22 @@ function updateQueueBadge(){
   if (!el){ el = document.createElement("div"); el.id = "queue-badge"; document.body.appendChild(el); }
   el.textContent = n + (n === 1 ? " booking" : " bookings") + " waiting for internet";
 }
-async function postBooking(payload){
+async function postOnce(payload, ms){
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 20000);
+  const timer = setTimeout(() => ctrl.abort(), ms);
   try {
     const res = await fetch(CONFIG.KIOSK_URL, { method: "POST", body: JSON.stringify(payload), signal: ctrl.signal });
     return await res.json();
   } finally { clearTimeout(timer); }
+}
+// Minsan mabagal ang Google (hal. bagong deploy). Uulitin nang isang beses gamit ang parehong requestId,
+// kaya kahit pumasok na ang una, hindi magdodoble ang booking.
+async function postBooking(payload){
+  try { return await postOnce(payload, 45000); }
+  catch (e) {
+    if (!e || e.name === "AbortError" || e.name === "TypeError") return await postOnce(payload, 45000);
+    throw e;
+  }
 }
 let flushing = false;
 async function flushQueue(){
@@ -906,7 +915,7 @@ async function submit(){
     const networkFail = !err || err.name === "AbortError" || err.name === "TypeError" || err.message === "Failed to fetch";
     if (KIOSK_MODE && networkFail){ saveOffline(); return; }
     S.sending = false;
-    S.error = (LANG === "en" && err && err.message && err.message !== "Failed to fetch") ? err.message : t("errSend");
+    S.error = (LANG === "en" && !networkFail && err && err.message) ? err.message : t("errSend");
     keepScroll();
   }
 }
