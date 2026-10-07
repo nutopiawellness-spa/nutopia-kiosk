@@ -650,9 +650,10 @@ function cartBar(){
 
 function timeOptions(){
   const out = [];
-  for (let m = 11 * 60; m <= 23 * 60 + 45; m += 15){
+  for (let m = 11 * 60; m <= 25 * 60 + 45; m += 15){ // hanggang 1:45 AM, pareho sa scheduler ("24:30" = 12:30 AM)
     const h = Math.floor(m / 60), mm = String(m % 60).padStart(2, "0");
-    const lbl = ((h % 12) || 12) + ":" + mm + (h >= 12 ? " PM" : " AM");
+    const hd = h % 24;
+    const lbl = ((hd % 12) || 12) + ":" + mm + (hd >= 12 ? " PM" : " AM");
     out.push(`<option value="${h}:${mm}" ${S.time === h + ":" + mm ? "selected" : ""}>${lbl}</option>`);
   }
   return out.join("");
@@ -920,7 +921,7 @@ async function submit(){
     keepScroll();
   }
 }
-function to12(t){ if (!t) return ""; const [h, m] = t.split(":").map(Number); return ((h % 12) || 12) + ":" + String(m).padStart(2, "0") + (h >= 12 ? " PM" : " AM"); }
+function to12(t){ if (!t) return ""; const [h, m] = t.split(":").map(Number); const hd = h % 24; return ((hd % 12) || 12) + ":" + String(m).padStart(2, "0") + (hd >= 12 ? " PM" : " AM"); }
 
 // ─────────────────────────────────────────────────────────────
 // KIOSK MODE: auto-reset para sa susunod na client
