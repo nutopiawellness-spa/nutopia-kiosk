@@ -1083,5 +1083,82 @@ if ("serviceWorker" in navigator && (location.protocol === "https:" || location.
   window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
 }
 </script>
+<script>
+// ── SCREENSAVER: announcement na malaki ang text, auto-scroll pataas, paulit-ulit ──
+// Lalabas kapag 45s walang galaw sa home screen (iPad kiosk mode lang). Isang tap → babalik.
+// Para palitan ang mensahe: baguhin ang SS_HTML. Para i-off: SS_UNTIL na lumipas na.
+(function(){
+  const SS_UNTIL = new Date("2026-12-01T00:00:00+08:00");   // hihinto pagkatapos ng Nov 30, 2026
+  const qp = new URLSearchParams(location.search);
+  const PREVIEW = qp.has("ss");                              // ?ss → preview (5s idle) para ma-test
+  const IDLE_MS = PREVIEW ? 5000 : 45000;
+  const SPEED = 38;                                          // pixels kada segundo
+  if (!(KIOSK_MODE || PREVIEW) || new Date() >= SS_UNTIL) return;
+  const SS_HTML = `
+    <div class="ss-brand">NUtopia Spa</div>
+    <div class="ss-tag">WELLNESS • BEAUTY</div>
+    <div class="ss-line"></div>
+    <h2 class="ss-title">Price Adjustment Notice</h2>
+    <div class="ss-date">Effective November 1, 2026</div>
+    <p class="ss-p ss-greet">Dear Valued Guests,</p>
+    <p class="ss-p">Please be informed that effective <b>November 1, 2026</b>, NUtopia Spa will implement a price adjustment for our spa services.</p>
+    <p class="ss-p">This change is due to rising fuel prices and operating costs, alongside our continued investment in upgraded systems, equipment, and advanced technology.</p>
+    <p class="ss-p">We remain committed to providing you with exceptional service, quality treatments, and a relaxing wellness experience.</p>
+    <p class="ss-p">We sincerely appreciate your understanding, trust, and continued support as we continue to enhance your experience at NUtopia Spa.</p>
+    <p class="ss-p ss-thanks">Thank you for choosing us as your sanctuary of tranquility within the city.</p>
+    <div class="ss-line"></div>`;
+  const st = document.createElement("style");
+  st.textContent = `
+#ss{position:fixed;inset:0;z-index:99999;background:radial-gradient(ellipse at 50% 30%,#FDFBF7 0%,#F4F1E8 60%,#E9E4D4 100%);overflow:hidden;cursor:pointer;opacity:0;transition:opacity .8s ease;display:none}
+#ss.on{display:block}#ss.show{opacity:1}
+#ss::before,#ss::after{content:"";position:absolute;left:0;right:0;height:18vh;z-index:2;pointer-events:none}
+#ss::before{top:0;background:linear-gradient(#F4F1E8,rgba(244,241,232,0))}
+#ss::after{bottom:0;background:linear-gradient(rgba(233,228,212,0),#E9E4D4)}
+.ss-track{position:absolute;left:50%;top:0;width:min(86vw,820px);transform:translate(-50%,100vh);text-align:center;color:#2F2F22;will-change:transform}
+.ss-brand{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(56px,9vw,92px);color:#555A36;line-height:1}
+.ss-tag{font-family:"Jost",system-ui,sans-serif;font-size:clamp(13px,1.8vw,18px);letter-spacing:.3em;color:#7a7a66;margin-top:10px}
+.ss-line{width:120px;height:2px;background:#555A36;opacity:.5;margin:46px auto}
+.ss-title{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clamp(46px,7.4vw,74px);line-height:1.05;margin:0;color:#2F2F22}
+.ss-date{display:inline-block;margin:22px 0 54px;padding:10px 26px;border-radius:999px;background:#555A36;color:#FAF8F2;font-family:"Jost",system-ui,sans-serif;font-weight:500;font-size:clamp(22px,3.4vw,34px)}
+.ss-p{font-family:"Jost",system-ui,sans-serif;font-size:clamp(26px,4.2vw,40px);line-height:1.5;margin:0 0 40px}
+.ss-p b{color:#555A36}
+.ss-greet,.ss-thanks{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:clamp(32px,5.2vw,50px);color:#555A36}
+.ss-hint{position:absolute;left:0;right:0;bottom:3vh;z-index:3;text-align:center;font-family:"Jost",system-ui,sans-serif;font-size:clamp(15px,2vw,20px);letter-spacing:.12em;color:#555A36;opacity:.75;animation:ssPulse 2.4s ease-in-out infinite}
+@keyframes ssPulse{0%,100%{opacity:.35}50%{opacity:.85}}`;
+  document.head.appendChild(st);
+  const el = document.createElement("div");
+  el.id = "ss"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Announcement");
+  el.innerHTML = `<div class="ss-track">${SS_HTML}</div><div class="ss-hint">TAP ANYWHERE TO CONTINUE</div>`;
+  document.body.appendChild(el);
+  const track = el.querySelector(".ss-track");
+  let raf = 0, t0 = 0, timer = 0, active = false;
+  function frame(ts){
+    if (!t0) t0 = ts - window.innerHeight * 0.5 / SPEED * 1000;   // simula sa gitna ng screen, hindi blangko
+    const H = track.offsetHeight, V = window.innerHeight, total = V + H;
+    const y = V - ((ts - t0) / 1000 * SPEED) % total;       // galing sa ibaba → pataas → ulit
+    track.style.transform = `translate(-50%, ${y}px)`;
+    raf = requestAnimationFrame(frame);
+  }
+  function canShow(){ return S.screen === "home" && !document.querySelector("input:focus,select:focus,textarea:focus"); }
+  function show(){
+    if (active || !canShow()) { arm(); return; }
+    active = true; t0 = 0; el.classList.add("on");
+    requestAnimationFrame(() => el.classList.add("show"));
+    raf = requestAnimationFrame(frame);
+  }
+  function hide(){
+    if (!active) return;
+    active = false; cancelAnimationFrame(raf);
+    el.classList.remove("show");
+    setTimeout(() => { if (!active) el.classList.remove("on"); }, 800);
+    arm();
+  }
+  function arm(){ clearTimeout(timer); timer = setTimeout(show, IDLE_MS); }
+  el.addEventListener("pointerdown", e => { e.preventDefault(); e.stopPropagation(); hide(); });
+  ["pointerdown", "keydown", "touchstart", "scroll", "input"].forEach(ev => document.addEventListener(ev, () => { if (!active) arm(); }, { passive: true, capture: true }));
+  window.ssPreview = show;
+  arm();
+})();
+</script>
 </body>
 </html>
