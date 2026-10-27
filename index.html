@@ -494,6 +494,8 @@ const catLabel = c => CAT_KEY[c] ? t(CAT_KEY[c]) : c;
 const SRC_KEY = { "Referral":"srcReferral", "Website":"srcWebsite", "Facebook Ad":"srcFbAd",
   "Facebook Page / Messenger":"srcFbPage", "Google Maps":"srcGMaps", "Google Search / Ads":"srcGSearch", "Hindi alam":"srcNotSure", "Regular Clients":"srcRegular", "Walk-in":"srcPassed" };
 const srcLabel = o => SRC_KEY[o.v] ? t(SRC_KEY[o.v]) : o.l;
+const LATIN_MSG = {"en": "Please type your name in English letters (A–Z), as on your passport or ID.", "fil": "Pakisulat ang pangalan gamit ang English letters (A–Z), gaya ng nasa passport o ID.", "zh": "请用英文字母（A–Z）填写姓名，与护照或证件上一致。", "ja": "お名前はパスポート・身分証と同じ英字（A–Z）でご入力ください。", "ko": "이름은 여권이나 신분증과 같이 영문(A–Z)으로 입력해 주세요.", "es": "Escriba su nombre con letras latinas (A–Z), como en su pasaporte o identificación.", "fr": "Veuillez écrire votre nom en lettres latines (A–Z), comme sur votre passeport ou pièce d'identité.", "de": "Bitte geben Sie Ihren Namen in lateinischen Buchstaben (A–Z) ein, wie im Reisepass oder Ausweis.", "ru": "Пожалуйста, введите имя латинскими буквами (A–Z), как в паспорте или удостоверении.", "pt": "Escreva seu nome com letras latinas (A–Z), como no passaporte ou documento.", "it": "Scrivi il tuo nome in lettere latine (A–Z), come sul passaporto o documento.", "vi": "Vui lòng nhập tên bằng chữ cái Latinh (A–Z), giống như trên hộ chiếu hoặc giấy tờ.", "th": "กรุณากรอกชื่อเป็นตัวอักษรภาษาอังกฤษ (A–Z) ตามหนังสือเดินทางหรือบัตรประจำตัว", "id": "Silakan tulis nama Anda dengan huruf Latin (A–Z), sesuai paspor atau kartu identitas.", "hi": "कृपया अपना नाम अंग्रेज़ी अक्षरों (A–Z) में लिखें, जैसा आपके पासपोर्ट या ID पर है।", "ar": "يرجى كتابة اسمك بالأحرف الإنجليزية (A–Z) كما في جواز السفر أو الهوية.", "tr": "Lütfen adınızı pasaportunuzdaki veya kimliğinizdeki gibi Latin harfleriyle (A–Z) yazın.", "he": "נא להקליד את השם באותיות לועזיות (A–Z), כמו בדרכון או בתעודה מזהה."};
+Object.keys(LATIN_MSG).forEach(l => { if (I18N[l]) I18N[l].errLatin = LATIN_MSG[l]; });
 const PAY_KEY = { "Cash":"payCash", "Card":"payCard", "Debit Card":"payDebit", "Credit Card":"payCredit", "Bank Transfer":"payBank" };
 const payLabel = p => { if (!PAY_KEY[p]) return p; const tr = t(PAY_KEY[p]), en = I18N.en[PAY_KEY[p]]; return (LANG === "en" || tr === en) ? en : tr + " / " + en; };
 // ── Service names per language (display only; scheduler gets English) ──
@@ -884,6 +886,8 @@ function validate(){
   if (!S.picked.length) return t("errPick");
   const miss = missingFields();
   if (miss.length){ S.showMiss = true; return incompleteMsg(miss); }
+  const nonLat = v => /[^A-Za-z\u00C0-\u024F\u1E00-\u1EFF\s'.\-]/.test(v);
+  if (nonLat(S.first) || nonLat(S.last)){ S.showMiss = true; setTimeout(() => { ["f-first","f-last"].forEach((id, i) => { const e = document.getElementById(id); if (e && nonLat(i ? S.last : S.first)) e.classList.add("miss"); }); }, 0); return t("errLatin"); }
   if (S.first.trim().length < 1) return "Please enter your first name.";
   if (S.last.trim().length < 1) return "Please enter your last name.";
   S.client = (S.first.trim() + " " + S.last.trim()).trim();
