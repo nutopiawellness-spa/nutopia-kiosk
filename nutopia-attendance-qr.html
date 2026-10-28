@@ -2618,6 +2618,29 @@ function cbor(buf) { // maliit na CBOR reader (sapat para sa WebAuthn)
   return rd();
 }
 
+// ── GPS ──
+let geoP = null;
+function getGeo() {
+  return new Promise(res => {
+    if (!navigator.geolocation) return res({ err: 2 });
+    navigator.geolocation.getCurrentPosition(p => res({ lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy }),
+      e => res({ err: e && e.code || 2 }), { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
+  });
+}
+function distM(a, b, c, d) { const r = x => x * Math.PI / 180, h = Math.pow(Math.sin(r(c - a) / 2), 2) + Math.cos(r(a)) * Math.cos(r(c)) * Math.pow(Math.sin(r(d - b) / 2), 2); return Math.round(12742000 * Math.asin(Math.sqrt(h))); }
+const GEO_HELP = "Location is blocked. <b>iPhone:</b> Settings → Privacy &amp; Security → Location Services → Safari Websites → <b>While Using</b>. <b>Android (Chrome):</b> tap 🔒 beside the address → Permissions → Location → <b>Allow</b>. Then scan the QR again.";
+function startGeo(ch) {
+  if (!ch.geo) { geoP = Promise.resolve(null); return; }
+  geoP = getGeo();
+  geoP.then(g => {
+    const el = $("#geo"); if (!el) return;
+    if (!g || g.err) { el.innerHTML = g && g.err === 1 ? `<div class="err" style="margin:0">${GEO_HELP}</div>` : `<span style="color:var(--red)">📍 Can't get your location — turn on Location / GPS.</span>`; return; }
+    const dm = distM(g.lat, g.lng, ch.geo.lat, ch.geo.lng), ok = dm <= (ch.geo.radius || 150) + Math.min(g.acc, 100);
+    el.innerHTML = ok ? `<span style="color:var(--green)">📍 You're at the spa ✓</span>` : `<span style="color:var(--red)">📍 You're about ${dm >= 1000 ? (dm / 1000).toFixed(1) + " km" : dm + " m"} away — you must be at the spa.</span>`;
+  });
+}
+const geoLine = ch => ch.geo ? `<div id="geo" class="muted" style="font-size:15px;margin:-12px 0 20px">📍 Checking your location…</div>` : "";
+
 async function startClock(c, w) {
   const me = lsGet(LS.cred);
   if (!hasPasskey()) return phoneMsg("!", "Not supported", ["Open this in <b>Safari</b> (iPhone) or <b>Chrome</b> (Android)."], true);
@@ -2628,20 +2651,22 @@ async function startClock(c, w) {
   if (ch.status === "unregistered") { return phoneMsg("!", "Phone not registered", [esc(ch.msg)], true); }
   if (ch.status !== "ok") return phoneMsg("!", "Try again", [esc(ch.msg || "Scan the QR again.")], true);
   if (ch.generic) { // walang naka-save sa phone na ito — passkey (Face ID) ang magsasabi kung sino
-    phoneShell(`<div class="hello">Hi 👋</div><div class="status">Tap below and confirm with Face ID / fingerprint.</div>
+    phoneShell(`<div class="hello">Hi 👋</div><div class="status">Tap below and confirm with Face ID / fingerprint.</div>${geoLine(ch)}
       <button class="btn block big" id="go">Time In / Out</button><div id="er"></div>
       <p class="muted center" style="margin-top:auto;padding-top:30px;font-size:13px">Never registered this phone? Ask the admin to <b>register your phone</b> first (one time only).</p>`);
     $("#go").onclick = () => doClock(null, ch, c, w);
+    startGeo(ch);
     return;
   }
   const done = ch.timeIn && ch.timeOut, isOut = ch.timeIn && !ch.timeOut;
   if (done) return phoneMsg("✓", "All done today", [`<b>${esc(ch.staffName)}</b>`, `In ${esc(to12(ch.timeIn))} · Out ${esc(to12(ch.timeOut))}`, "Need a change? Ask the admin."]);
   phoneShell(`<div class="hello">Hi, ${esc(ch.staffName)} 👋</div>
-    <div class="status">${isOut ? `You timed in at <b>${esc(to12(ch.timeIn))}</b>.` : "You haven't timed in today."}</div>
+    <div class="status">${isOut ? `You timed in at <b>${esc(to12(ch.timeIn))}</b>.` : "You haven't timed in today."}</div>${geoLine(ch)}
     <button class="btn block big" id="go">${isOut ? "Time Out" : "Time In"}</button>
     <p class="muted center" style="margin-top:14px;font-size:14px">You'll be asked for Face ID / fingerprint.</p><div id="er"></div>
     <p class="muted center" style="margin-top:auto;padding-top:30px;font-size:12px">Not ${esc(ch.staffName)}? This phone is registered to them — ask the admin.</p>`);
   $("#go").onclick = () => doClock(me, ch, c, w);
+  startGeo(ch);
 }
 async function doClock(me, ch, c, w) {
     $("#go").disabled = true; $("#er").innerHTML = "";
@@ -2649,7 +2674,10 @@ async function doClock(me, ch, c, w) {
       const pk = { challenge: unb64u(ch.challenge), rpId: location.hostname, userVerification: "required", timeout: 90000 };
       if (me) pk.allowCredentials = [{ type: "public-key", id: unb64u(me.credId) }];
       const a = await navigator.credentials.get({ publicKey: pk });
-      const j = await api("POST", { action: "qaClock", credId: a.id, c, w,
+      let g = geoP ? await geoP : null;
+      if (ch.geo && (!g || g.err)) { geoP = getGeo(); g = await geoP; } // subukan ulit nang isang beses
+      if (ch.geo && (!g || g.err)) { $("#go").disabled = false; $("#er").innerHTML = `<div class="err">${g && g.err === 1 ? GEO_HELP : "Can't get your location. Turn on Location / GPS, then tap again."}</div>`; return; }
+      const j = await api("POST", { action: "qaClock", credId: a.id, c, w, lat: g ? g.lat : "", lng: g ? g.lng : "", acc: g ? g.acc : "",
         clientDataJSON: b64u(a.response.clientDataJSON), authenticatorData: b64u(a.response.authenticatorData), signature: b64u(a.response.signature) });
       if (j.status === "ok" || j.status === "done") lsSet(LS.cred, { credId: a.id, staffId: String(j.staffId || ""), name: j.staffName || "", at: Date.now() });
       if (j.status === "unregistered") throw new Error(j.msg);
