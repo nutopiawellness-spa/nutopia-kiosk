@@ -370,8 +370,8 @@ const SVCS=[
   {id:60,cat:"Facial Treatment",name:"Advanced Regimen by NU Skin",v:"",p:3200,dur:60},
   {id:61,cat:"Facial Treatment",name:"Facial Add-on (Cucumber/Whitening/Collagen)",v:"",p:400,dur:60},
   // Nail Care
-  {id:62,cat:"Nail Care & Grooming",name:"Classic Hand Clean",v:"",p:400,dur:45},
-  {id:63,cat:"Nail Care & Grooming",name:"Classic Foot Clean",v:"",p:450,dur:45},
+  {id:62,cat:"Nail Care & Grooming",name:"Classic Hand Clean",v:"",p:500,dur:45},
+  {id:63,cat:"Nail Care & Grooming",name:"Classic Foot Clean",v:"",p:550,dur:45},
   {id:64,cat:"Nail Care & Grooming",name:"Classic Hand & Foot Clean",v:"",p:800,dur:90},
   {id:65,cat:"Nail Care & Grooming",name:"Signature Manicure",v:"",p:600,dur:45},
   {id:66,cat:"Nail Care & Grooming",name:"Signature Pedicure",v:"",p:700,dur:45},
@@ -483,7 +483,7 @@ const CAT_LABEL = {
   "Hand & Foot Services": "Hand & Foot", "Beauty Services": "Beauty", "Scrubs & Sauna": "Scrubs & Sauna",
   "Body Treatment": "Body", "Promos & Packages": "Promos"
 };
-const KIOSK_OFF = [22, 23, 24, 51, 58, 61, 62, 63, 64, 96, 120, 121, 125, 126, 152, 153, 154]; // wala na sa bagong menu (Nov 5, 2026)
+const KIOSK_OFF = [22, 23, 24, 51, 58, 61, 96, 120, 121, 125, 126, 152, 153, 154]; // wala na sa bagong menu (Nov 5, 2026)
 const CATS = [...new Set(SVCS.filter(s => !KIOSK_OFF.includes(s.id)).map(s => s.cat))];
 
 // ─────────────────────────────────────────────────────────────
@@ -525,7 +525,7 @@ const svcNameTxt = n => { const tr = svcTr(n); return tr ? tr + " / " + n : n; }
 
 // Pinagsama ang mga variant ng iisang service (hal. Swedish 60 / 90 / 120 min)
 const GROUPS = [];
-SVCS.forEach(s => {
+SVCS.filter(s => !KIOSK_OFF.includes(s.id)).forEach(s => {
   let g = GROUPS.find(x => x.cat === s.cat && x.name === s.name);
   if (!g) { g = { cat: s.cat, name: s.name, items: [] }; GROUPS.push(g); }
   g.items.push(s);
