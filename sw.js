@@ -1,8 +1,8 @@
 // NUtopia Kiosk — offline support (service worker) v4
 // Laging inuuna ang PINAKABAGONG version mula sa internet.
 // Ang naka-save na kopya ay gagamitin lang kapag talagang walang internet.
-const CACHE = "nutopia-kiosk-v8";
-const CORE = ["./", "./index.html", "./menu.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
+const CACHE = "nutopia-kiosk-v11";
+const CORE = ["./", "./index.html", "./menu.html", "./services.js", "./availability.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE.map(u => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
