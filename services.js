@@ -157,7 +157,7 @@ const SVCS=[
   {id:125,cat:"Promos & Packages",name:"Hand Spa & 90min Massage",v:"",p:1900,dur:120},
   {id:126,cat:"Promos & Packages",name:"Foot Spa & 90min Massage",v:"",p:2000,dur:120},
   {id:128,cat:"Promos & Packages",name:"Promo 5 - Ultrasonic Wonder Lift & Eye Contour",v:"",p:4499,dur:90},
-  {id:129,cat:"Promos & Packages",name:"Mix & Match Combo",v:"",p:1999,dur:90},
+  {id:129,cat:"Promos & Packages",name:"Mix & Match Combo",v:"",p:2299,dur:90},
   {id:143,cat:"Promos & Packages",name:"Relax & Glow - Deep Cleansing Facial + Whole Body Massage",v:"",p:1699,dur:120},
   {id:130,cat:"Promos & Packages",name:"Couple Package 1 - Sauna & 90min Massage",v:"2 pax",p:4599,dur:120},
   {id:131,cat:"Promos & Packages",name:"Couple Package 2 - Foot Spa w/ Pedicure & 60min Massage",v:"2 pax",p:4699,dur:120},
